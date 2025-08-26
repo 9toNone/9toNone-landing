@@ -1,8 +1,6 @@
 // netlify/functions/tradingview-to-mailjet.js
-// Sends TradingView alerts to EVERY email in a Mailjet Contact List.
-// - Uses built-in fetch (Node 18+)
-// - Fetches list members via Mailjet v3 REST API
-// - Sends in chunks of 50 recipients per message
+// TradingView -> Netlify -> Mailjet (send to EVERY address in a Mailjet Contact List)
+// Uses Node 18 built-in fetch. Batches sends in chunks of 50.
 
 const CHUNK = 50;
 
@@ -11,33 +9,29 @@ exports.handler = async (event) => {
     // 1) Secret check
     const secret = event.queryStringParameters?.secret || "";
     if (secret !== process.env.ALERT_SECRET) {
-      return res(401, { ok: false, error: "Unauthorized (bad secret)" });
+      return json(401, { ok: false, error: "Unauthorized (bad secret)" });
     }
 
-    // 2) Parse JSON body
-    let body = {};
-    try { body = JSON.parse(event.body || "{}"); } catch {}
-    const symbol   = String(body.symbol || body.ticker || "UNKNOWN").toUpperCase();
-    const action   = String(body.action || "signal").toUpperCase();
-    const price    = body.price != null ? String(body.price) : "—";
-    const when     = body.time || new Date().toISOString();
-    const interval = body.interval != null ? String(body.interval) : "—";
+    // 2) Parse body
+    let payload = {};
+    try { payload = JSON.parse(event.body || "{}"); } catch {}
+    const symbol   = String(payload.symbol || payload.ticker || "UNKNOWN").toUpperCase();
+    const action   = String(payload.action || "signal").toUpperCase();
+    const price    = payload.price != null ? String(payload.price) : "—";
+    const when     = payload.time || new Date().toISOString();
+    const interval = payload.interval != null ? String(payload.interval) : "—";
 
     // 3) Required env
     const { MAILJET_API_KEY, MAILJET_SECRET_KEY, MAILJET_SENDER, MAILJET_LIST_ID } = process.env;
     if (!MAILJET_API_KEY || !MAILJET_SECRET_KEY || !MAILJET_SENDER || !MAILJET_LIST_ID) {
-      return res(500, { ok: false, error: "Missing Mailjet env vars (API key/secret/sender/list id)" });
+      return json(500, { ok: false, error: "Missing Mailjet env vars (API key/secret/sender/list id)" });
     }
+    const auth = "Basic " + Buffer.from(`${MAILJET_API_KEY}:${MAILJET_SECRET_KEY}`).toString("base64");
 
-    // 4) Pull ALL emails from the Mailjet Contact List
-    const emails = await fetchListEmails({
-      apiKey: MAILJET_API_KEY,
-      apiSecret: MAILJET_SECRET_KEY,
-      listId: MAILJET_LIST_ID
-    });
-
+    // 4) Fetch emails in the list via /v3/REST/listrecipient (NOT contactslist/contacts)
+    const emails = await fetchEmailsFromList(auth, MAILJET_LIST_ID);
     if (!emails.length) {
-      return res(200, { ok: true, message: "No recipients in list; nothing to send." });
+      return json(200, { ok: true, message: "No active recipients in list; nothing to send." });
     }
 
     // 5) Build email content
@@ -55,11 +49,9 @@ exports.handler = async (event) => {
       </div>
     `;
 
-    // 6) Send in batches of 50 recipients (Mailjet Send API v3.1)
-    const auth = "Basic " + Buffer.from(`${MAILJET_API_KEY}:${MAILJET_SECRET_KEY}`).toString("base64");
+    // 6) Send in batches of 50
     const batches = chunk(emails, CHUNK);
-    const sendResults = [];
-
+    const results = [];
     for (const batch of batches) {
       const to = batch.map((email) => ({ Email: email }));
       const resp = await fetch("https://api.mailjet.com/v3.1/send", {
@@ -76,48 +68,59 @@ exports.handler = async (event) => {
           }]
         })
       });
-
       const data = await resp.json().catch(() => ({}));
       if (!resp.ok) {
-        return res(502, { ok: false, error: "mailjet-send-failed", status: resp.status, detail: data });
+        return json(502, { ok: false, error: "mailjet-send-failed", status: resp.status, detail: data });
       }
-      sendResults.push(data);
+      results.push(data);
     }
 
-    return res(200, { ok: true, message: "Alert sent", recipients: emails.length, batches: batches.length, results: sendResults });
+    return json(200, { ok: true, message: "Alert sent", recipients: emails.length, batches: batches.length });
   } catch (err) {
     console.error("[tradingview-to-mailjet] fatal", err);
-    return res(500, { ok: false, error: "server-error", detail: String(err) });
+    return json(500, { ok: false, error: "server-error", detail: String(err) });
   }
 };
 
-// ---- helpers ----
-function res(code, obj) { return { statusCode: code, headers: { "Content-Type": "application/json" }, body: JSON.stringify(obj) }; }
+// ---- Helpers ----
+function json(code, obj) {
+  return { statusCode: code, headers: { "Content-Type": "application/json" }, body: JSON.stringify(obj) };
+}
 function chunk(arr, size) { const out=[]; for (let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size)); return out; }
 
-// Fetch all emails in a Mailjet Contact List (v3 REST)
-async function fetchListEmails({ apiKey, apiSecret, listId }) {
-  const auth = "Basic " + Buffer.from(`${apiKey}:${apiSecret}`).toString("base64");
+// Pull emails from a Mailjet Contact List via listrecipient
+async function fetchEmailsFromList(authHeader, listId) {
   let emails = [];
   let offset = 0;
-  const limit = 1000; // max per page
+  const limit = 1000; // per page
 
   while (true) {
-    const url = `https://api.mailjet.com/v3/REST/contactslist/${encodeURIComponent(listId)}/contacts?Limit=${limit}&Offset=${offset}`;
-    const resp = await fetch(url, { headers: { Authorization: auth } });
+    // Filters:
+    //  - ContactsList=ID : which list
+    //  - IsActive=true   : only active members
+    //  - IsUnsubscribed=false : exclude unsubscribed
+    //  - ShowContact=true : include nested Contact object with Email
+    const url = `https://api.mailjet.com/v3/REST/listrecipient` +
+      `?ContactsList=${encodeURIComponent(listId)}` +
+      `&IsActive=true&IsUnsubscribed=false&ShowContact=true` +
+      `&Limit=${limit}&Offset=${offset}`;
+
+    const resp = await fetch(url, { headers: { Authorization: authHeader } });
     const data = await resp.json().catch(() => ({}));
-    if (!resp.ok) throw new Error("contactslist-fetch-failed: " + JSON.stringify(data));
+    if (!resp.ok) {
+      throw new Error(`listrecipient-fetch-failed: ${JSON.stringify(data)}`);
+    }
 
     const rows = data.Data || [];
-    for (const row of rows) {
-      // Row format: { Contact: { ID, Email, ... }, IsActive: true, ... }
-      const email = row?.Contact?.Email || row?.Email;
+    for (const r of rows) {
+      const email = r?.Contact?.Email || r?.Email;
       if (email) emails.push(email);
     }
+
     if (rows.length < limit) break; // last page
     offset += rows.length;
   }
 
-  // de-dupe
+  // dedupe just in case
   return [...new Set(emails)];
 }
