@@ -9,93 +9,72 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
   <style>
-    :root {
-      --bg: #07090c; --panel: #0b1016; --muted: #8fa0b8; --text: #eaf1f8;
-      --green: #16c172; --red: #ff4d4f; --accent: #3a86ff; --edge: #162231; --edge-2: #1a2738;
-      --glass: rgba(255,255,255,0.04); --ring: rgba(22,193,114,.35);
-      --gradient-start: rgba(22,193,114,.15); --gradient-end: rgba(255,77,79,.15);
+    :root{
+      --bg:#07090c;--panel:#0b1016;--muted:#8fa0b8;--text:#eaf1f8;
+      --green:#16c172;--red:#ff4d4f;--accent:#3a86ff;--edge:#162231;--edge-2:#1a2738;
+      --ring:rgba(22,193,114,.35);--gradient-start:rgba(22,193,114,.15);--gradient-end:rgba(255,77,79,.15);
     }
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{
-      margin:0;
       background:
         radial-gradient(120% 140% at 15% 10%, var(--gradient-start), transparent 55%),
         radial-gradient(120% 140% at 85% 0%, var(--gradient-end), transparent 55%),
-        linear-gradient(180deg, #07090c 0%, #0a0f14 60%, #07090c 100%);
-      color:var(--text); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      line-height:1.6; overflow-x:hidden;
+        linear-gradient(180deg,#07090c 0%,#0a0f14 60%,#07090c 100%);
+      color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.6;overflow-x:hidden
     }
     a{color:inherit;text-decoration:none;transition:.3s}
-    img{max-width:100%;display:block}
     .container{max-width:1200px;margin:0 auto;padding:0 24px}
     section{padding:80px 0}
-
-    /* Animations */
     .animate{opacity:0;transform:translateY(20px);transition:opacity .8s, transform .8s}
     .animate.animated{opacity:1;transform:translateY(0)}
 
-    /* Header */
     header{position:sticky;top:0;backdrop-filter:blur(10px);
       background:linear-gradient(180deg,rgba(7,9,12,.85),rgba(7,9,12,.45));
       border-bottom:1px solid var(--edge-2);z-index:100;padding:12px 0}
     .nav{display:flex;align-items:center;justify-content:space-between;gap:18px}
     .logo{display:inline-flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.3px;font-size:1.4rem}
     .logo .mark{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
-      background:conic-gradient(from 270deg,var(--green) 0 50%,var(--red) 50% 100%);
-      box-shadow:0 4px 12px rgba(0,0,0,.3)}
+      background:conic-gradient(from 270deg,var(--green) 0 50%,var(--red) 50% 100%);box-shadow:0 4px 12px rgba(0,0,0,.3)}
     .menu{display:flex;gap:28px;color:#b7c6e0}
     .menu a{opacity:.9;font-weight:500;position:relative}
     .menu a:after{content:'';position:absolute;width:0;height:2px;bottom:-4px;left:0;background:var(--green);transition:width .3s}
     .menu a:hover:after{width:100%}
 
-    /* Hero */
     .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;padding:60px 0}
     .h1{font-size:3.2rem;line-height:1.1;margin:16px 0 20px;font-weight:800;letter-spacing:-.02em}
     .h1 .up{color:var(--green)} .h1 .down{color:var(--red)}
     .sub{color:#b9c5d9;max-width:62ch;font-size:1.1rem;margin-bottom:24px}
-    .badge{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--edge-2);border-radius:999px;
-      padding:8px 16px;font-size:.85rem;color:#9db0cc;background:rgba(11,17,23,.7);backdrop-filter:blur(10px)}
-    .cta{display:flex;gap:16px;margin-top:32px;flex-wrap:wrap}
-    .btn{background:var(--green);color:#06120b;font-weight:700;padding:16px 28px;border-radius:12px;
-      border:1px solid rgba(15,42,29,.5);cursor:pointer;box-shadow:0 10px 30px -8px var(--ring);
-      transition:all .3s;display:inline-flex;gap:8px;align-items:center}
-    .btn:hover{transform:translateY(-3px);box-shadow:0 14px 40px -8px var(--ring)}
+    .badge{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--edge-2);border-radius:999px;padding:8px 16px;font-size:.85rem;color:#9db0cc;background:rgba(11,17,23,.7);backdrop-filter:blur(10px)}
+    .cta{display:flex;gap:16px;margin-top:24px;flex-wrap:wrap}
+    .btn{background:var(--green);color:#06120b;font-weight:700;padding:14px 24px;border-radius:12px;border:1px solid rgba(15,42,29,.5);cursor:pointer;box-shadow:0 10px 30px -8px var(--ring);display:inline-flex;gap:8px;align-items:center}
+    .btn:hover{transform:translateY(-3px)}
     .btn.ghost{background:transparent;color:#d8e4ff;border:1px solid var(--edge-2)}
-    .btn.ghost:hover{background:rgba(255,255,255,.05)}
-
-    .heroShot{border:1px solid var(--edge);border-radius:20px;background:linear-gradient(180deg,#0d1218,#0a0f15);
-      padding:20px;box-shadow:0 20px 40px rgba(0,0,0,.3);position:relative;overflow:hidden}
-    .hero-image{border-radius:12px;overflow:hidden}
-    .hero-image img{transition:transform .5s ease}
-    .hero-image:hover img{transform:scale(1.02)}
+    .heroShot{border:1px solid var(--edge);border-radius:20px;background:linear-gradient(180deg,#0d1218,#0a0f15);padding:20px;box-shadow:0 20px 40px rgba(0,0,0,.3)}
     .image-caption{color:#95a8c8;font-size:14px;text-align:center;margin-top:8px}
+
+    #tv-advanced-chart{width:100%;height:420px;border-radius:12px;overflow:hidden}
+    @media (min-width:1024px){#tv-advanced-chart{height:460px}}
 
     .section-title{text-align:center;margin-bottom:60px}
     .section-title h2{font-size:2.3rem;font-weight:800;margin-bottom:16px}
-    .section-title p{color:#9db0cc;max-width:700px;margin:0 auto;font-size:1.05rem}
+    .section-title p{color:#9db0cc;max-width:700px;margin:0 auto}
     .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
     .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-    .card{background:linear-gradient(180deg,#0d1218 0%, #0a0f15 100%);border:1px solid var(--edge);
-      border-radius:20px;padding:28px;transition:all .3s;position:relative;overflow:hidden}
+    .card{background:linear-gradient(180deg,#0d1218 0%,#0a0f15 100%);border:1px solid var(--edge);border-radius:20px;padding:28px;transition:.3s}
     .card:hover{transform:translateY(-5px);box-shadow:0 15px 35px rgba(0,0,0,.2);border-color:rgba(22,193,114,.2)}
-    .pill{display:inline-block;padding:8px 16px;border-radius:999px;background:rgba(11,17,23,.7);
-      border:1px solid var(--edge-2);color:#9ab0d6;font-size:.85rem;font-weight:500;margin-bottom:16px}
+    .pill{display:inline-block;padding:8px 16px;border-radius:999px;background:rgba(11,17,23,.7);border:1px solid var(--edge-2);color:#9ab0d6;font-size:.85rem;font-weight:500;margin-bottom:16px}
 
-    /* Pricing (2 options only) */
     .pricing{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
-    .price{text-align:center;display:flex;flex-direction:column;height:100%;position:relative}
+    .price{text-align:center;display:flex;flex-direction:column;position:relative}
     .price .title{font-weight:700;font-size:1.3rem;margin-bottom:12px}
-    .price .value{font-size:2.6rem;font-weight:800;margin:16px 0;color:var(--text)}
-    .price ul{list-style:none;padding:0;margin:16px 0;color:#c1cee8;flex-grow:1}
+    .price .value{font-size:2.6rem;font-weight:800;margin:16px 0}
+    .price ul{list-style:none;margin:16px 0;color:#c1cee8;flex-grow:1}
     .price li{display:flex;gap:10px;margin:10px 0;text-align:left}
-    .check{width:20px;height:20px;border-radius:50%;background:linear-gradient(180deg,var(--green),#118e54);
-      display:inline-flex;align-items:center;justify-content:center;color:#04130a;font-weight:900;flex-shrink:0}
-    .price.featured{outline:2px solid var(--green);outline-offset:-2px;transform:scale(1.02);z-index:1}
+    .check{width:20px;height:20px;border-radius:50%;background:linear-gradient(180deg,var(--green),#118e54);display:inline-flex;align-items:center;justify-content:center;color:#04130a;font-weight:900}
+    .price.featured{outline:2px solid var(--green);outline-offset:-2px;transform:scale(1.02)}
     .footer{border-top:1px solid var(--edge);color:#8aa0c7;padding:40px 0;margin-top:40px}
 
-    /* Responsive */
     @media (max-width:1024px){.hero{grid-template-columns:1fr;text-align:center;gap:40px}.grid-3{grid-template-columns:repeat(2,1fr)}}
     @media (max-width:768px){.grid-3,.grid-2,.pricing{grid-template-columns:1fr}.menu{display:none}.h1{font-size:2.2rem}}
     .mobile-menu-btn{display:none;background:none;border:0;color:var(--text);font-size:1.5rem;cursor:pointer}
@@ -114,32 +93,6 @@
       </nav>
       <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
     </div>
-
-    <!-- Live Ticker Tape (TradingView) -->
-    <div class="container" style="padding-top:10px">
-      <div class="tradingview-widget-container">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-        {
-          "symbols": [
-            {"proName": "NASDAQ:TSLA", "title": "TSLA"},
-            {"proName": "NASDAQ:NVDA", "title": "NVDA"},
-            {"proName": "NASDAQ:AAPL", "title": "AAPL"},
-            {"proName": "NASDAQ:AMZN", "title": "AMZN"},
-            {"proName": "NASDAQ:MSFT", "title": "MSFT"},
-            {"proName": "SP:SPX", "title": "S&P 500"},
-            {"proName": "BITSTAMP:BTCUSD", "title": "BTC/USD"},
-            {"proName": "BITSTAMP:ETHUSD", "title": "ETH/USD"}
-          ],
-          "showSymbolLogo": true,
-          "colorTheme": "dark",
-          "isTransparent": true,
-          "displayMode": "adaptive",
-          "locale": "en"
-        }
-        </script>
-      </div>
-    </div>
   </header>
 
   <main class="container hero">
@@ -151,91 +104,21 @@
         <a class="btn" id="buyMonthly"><i class="fas fa-arrow-right"></i> Get Monthly Access</a>
         <a class="btn ghost" href="#pricing"><i class="fas fa-tags"></i> See Plans</a>
       </div>
-      <div style="display:flex;gap:24px;margin-top:18px;color:#9db0cc">Questions? <a href="mailto:9tononeassociates@gmail.com" style="color:var(--green)">9tononeassociates@gmail.com</a></div>
     </div>
     <div class="heroShot animate">
       <div class="pill"><i class="fas fa-chart-bar"></i> Live chart preview</div>
-      <div class="hero-image">
-        <img src="https://placehold.co/800x450/0a0f15/eaf1f8?text=9toNone+TradingView+Indicator" alt="9toNone TradingView Indicator Preview">
-      </div>
-      <p class="image-caption">Real-time signals with green BUY and red SELL/EXIT markers</p>
+      <div id="tv-advanced-chart"></div>
+      <p class="image-caption">Interactive chart powered by TradingView</p>
     </div>
   </main>
-
-  <section id="features">
-    <div class="container">
-      <div class="section-title animate">
-        <h2>Why Traders Choose 9toNone</h2>
-        <p>Professional tools for serious traders who value precision and simplicity</p>
-      </div>
-      <div class="grid-3">
-        <div class="card animate">
-          <div class="pill"><i class="fas fa-bolt"></i> Signal Engine</div>
-          <h3 style="margin:8px 0 12px">Clarity at a Glance</h3>
-          <p style="color:#b1c2db">Green = BUY, Red = SELL/EXIT. Optional stop context and trend filters reduce noise and improve accuracy.</p>
-        </div>
-        <div class="card animate">
-          <div class="pill"><i class="fas fa-lock"></i> Invite-Only</div>
-          <h3 style="margin:8px 0 12px">Protected Access</h3>
-          <p style="color:#b1c2db">We whitelist your TradingView username. Your edge stays your edge with exclusive access.</p>
-        </div>
-        <div class="card animate">
-          <div class="pill"><i class="fas fa-bell"></i> Alert-Ready</div>
-          <h3 style="margin:8px 0 12px">Instant Notifications</h3>
-          <p style="color:#b1c2db">Use TradingView alerts to get immediate notifications when signals print.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Live Symbol Overview -->
-  <section id="quotes">
-    <div class="container">
-      <div class="section-title animate">
-        <h2>Live Markets Overview</h2>
-        <p>Stay close to price action right from the 9toNone homepage</p>
-      </div>
-      <div class="tradingview-widget-container card">
-        <div class="tradingview-widget-container__widget"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
-        {
-          "symbols": [
-            ["NASDAQ:TSLA|1D"], ["NASDAQ:NVDA|1D"], ["NASDAQ:AAPL|1D"],
-            ["NASDAQ:AMZN|1D"], ["NASDAQ:MSFT|1D"], ["SP:SPX|1D"],
-            ["BITSTAMP:BTCUSD|1D"], ["BITSTAMP:ETHUSD|1D"]
-          ],
-          "chartOnly": false,
-          "width": "100%",
-          "height": "500",
-          "locale": "en",
-          "colorTheme": "dark",
-          "autosize": true,
-          "showVolume": false,
-          "showMA": false,
-          "hideDateRanges": false,
-          "hideMarketStatus": false,
-          "hideSymbolLogo": false,
-          "scalePosition": "right",
-          "scaleMode": "Normal",
-          "fontFamily": "Inter, sans-serif",
-          "noTimeScale": false,
-          "backgroundColor": "rgba(0, 0, 0, 0)",
-          "gridLineColor": "rgba(255, 255, 255, 0.06)"
-        }
-        </script>
-      </div>
-    </div>
-  </section>
 
   <section id="pricing">
     <div class="container">
       <div class="section-title animate">
         <h2>Simple, Transparent Pricing</h2>
-        <p>Choose Monthly or Lifetime access</p>
+        <p>Choose Monthly or Yearly access</p>
       </div>
-
       <div class="pricing">
-        <!-- Monthly -->
         <div class="card price featured animate">
           <div class="title">Monthly</div>
           <div class="value">$50<span style="font-size:16px;font-weight:600"> / month</span></div>
@@ -246,69 +129,26 @@
             <li><span class="check">✓</span> Updates included</li>
           </ul>
           <div style="margin-top:14px">
-            <a class="btn" id="btnMonthly" data-gumroad-single-product="true">Start Monthly</a>
+            <a class="btn" id="btnMonthly">Start Monthly</a>
           </div>
         </div>
 
-        <!-- Lifetime -->
         <div class="card price animate">
-          <div class="title">Lifetime</div>
-          <div class="value">$299<span style="font-size:16px;font-weight:600"> once</span></div>
+          <div class="title">Yearly</div>
+          <div class="value">$299<span style="font-size:16px;font-weight:600"> / year</span></div>
           <ul>
-            <li><span class="check">✓</span> Permanent access</li>
-            <li><span class="check">✓</span> All future updates</li>
+            <li><span class="check">✓</span> 12 months full access</li>
+            <li><span class="check">✓</span> All updates during membership</li>
             <li><span class="check">✓</span> Priority support</li>
           </ul>
           <div style="margin-top:14px">
-            <a class="btn ghost" id="btnLifetime" data-gumroad-single-product="true">Buy Lifetime</a>
+            <a class="btn ghost" id="btnYearly">Start Yearly</a>
           </div>
         </div>
       </div>
-
       <p style="color:#95a8c8;font-size:14px;margin-top:20px;text-align:center">
         Educational use only. Not financial advice.
       </p>
-    </div>
-  </section>
-
-  <section class="faq" id="faq">
-    <div class="container">
-      <div class="section-title animate">
-        <h2>Frequently Asked Questions</h2>
-        <p>Everything you need to know about 9toNone</p>
-      </div>
-      <div class="grid-2">
-        <details class="animate" open>
-          <summary>Is my source code protected?</summary>
-          <div class="faq-content">Yes—invite-only access on TradingView prevents viewing or copying the source code.</div>
-        </details>
-        <details class="animate">
-          <summary>What markets/timeframes does it work on?</summary>
-          <div class="faq-content">Any symbol on TradingView: stocks, crypto, indices, futures, FX. Timeframes from 1-minute to weekly.</div>
-        </details>
-        <details class="animate">
-          <summary>How do I get access after paying?</summary>
-          <div class="faq-content">You enter your TradingView username at checkout. We whitelist you and it appears under Indicators → Invite-Only Scripts.</div>
-        </details>
-        <details class="animate">
-          <summary>Refund policy?</summary>
-          <div class="faq-content">Digital invite-only access is generally final. We’ll resolve any access issues promptly.</div>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="container">
-      <div class="card" style="display:flex;gap:24px;align-items:center;justify-content:space-between;flex-wrap:wrap; padding:28px;">
-        <div style="max-width:70ch">
-          <div class="pill"><i class="fas fa-gavel"></i> Compliance</div>
-          <p style="color:#95a8c8; margin-top:12px;">Educational use only. Not investment advice. Trading involves risk. By using this tool you accept our
-            <a href="/terms-of-service.html" style="color:var(--green);">Terms of Service</a> and
-            <a href="/privacy-policy.html" style="color:var(--green);">Privacy Policy</a>.</p>
-        </div>
-        <div class="pill">© <span id="yr"></span> 9toNone LLC</div>
-      </div>
     </div>
   </section>
 
@@ -323,55 +163,32 @@
     </div>
   </footer>
 
+  <script src="https://s3.tradingview.com/tv.js"></script>
   <script>
-    // ==== EDIT THESE TWO LINKS ONLY ====
-    const MONTHLY_URL  = "YOUR_MONTHLY_LINK_HERE";   // e.g. https://mustangrider78.gumroad.com/l/9tonone-monthly
-    const LIFETIME_URL = "YOUR_LIFETIME_LINK_HERE";  // e.g. https://mustangrider78.gumroad.com/l/9tonone-lifetime
-    // ===================================
+    const MONTHLY_URL = "https://mustangrider78.gumroad.com/l/9tonone-indicator";
+    const YEARLY_URL  = "https://mustangrider78.gumroad.com/l/9tonone-yearly";
 
-    // Animate on scroll
-    function animateOnScroll() {
-      document.querySelectorAll('.animate').forEach(el => {
-        const top = el.getBoundingClientRect().top;
-        if (top < window.innerHeight - 150) el.classList.add('animated');
-      });
+    function wireButton(el, url){
+      if(el) el.addEventListener('click', ()=>{ window.open(url, "_blank"); });
     }
-    window.addEventListener('scroll', animateOnScroll);
-    window.addEventListener('load', animateOnScroll);
 
-    // Wire buttons
-    const buyMonthly  = document.getElementById('buyMonthly');
-    const btnMonthly  = document.getElementById('btnMonthly');
-    const btnLifetime = document.getElementById('btnLifetime');
+    wireButton(document.getElementById('buyMonthly'), MONTHLY_URL);
+    wireButton(document.getElementById('btnMonthly'), MONTHLY_URL);
+    wireButton(document.getElementById('btnYearly'), YEARLY_URL);
 
-    [buyMonthly, btnMonthly].forEach(el => el && el.addEventListener('click', (e) => {
-      if (!MONTHLY_URL || MONTHLY_URL.includes("YOUR_MONTHLY_LINK_HERE")) {
-        e.preventDefault(); alert('Set MONTHLY_URL in the HTML to your real Gumroad link.'); return;
-      }
-      el.setAttribute('href', MONTHLY_URL);
-    }));
-
-    btnLifetime && btnLifetime.addEventListener('click', (e) => {
-      if (!LIFETIME_URL || LIFETIME_URL.includes("YOUR_LIFETIME_LINK_HERE")) {
-        e.preventDefault(); alert('Set LIFETIME_URL in the HTML to your real Gumroad link.'); return;
-      }
-      btnLifetime.setAttribute('href', LIFETIME_URL);
+    new TradingView.widget({
+      "container_id": "tv-advanced-chart",
+      "autosize": true,
+      "symbol": "NASDAQ:TSLA",
+      "interval": "60",
+      "timezone": "Etc/UTC",
+      "theme": "dark",
+      "style": "1",
+      "locale": "en",
+      "allow_symbol_change": true,
+      "withdateranges": true
     });
-
-    // Current year
-    document.getElementById('yr').textContent = new Date().getFullYear();
-
-    // Mobile menu
-    const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-    const menu = document.querySelector('.menu');
-    if (mobileMenuBtn) {
-      mobileMenuBtn.addEventListener('click', () => {
-        menu.style.display = (menu.style.display === 'flex') ? 'none' : 'flex';
-      });
-    }
   </script>
-
-  <!-- Gumroad overlay (optional) -->
-  <script src="https://gumroad.com/js/gumroad.js" async></script>
 </body>
 </html>
+
