@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
   <style>
     :root {
       --bg: #07090c; --panel: #0b1016; --muted: #8fa0b8; --text: #eaf1f8;
@@ -16,122 +17,89 @@
       --glass: rgba(255,255,255,0.04); --ring: rgba(22,193,114,.35);
       --gradient-start: rgba(22,193,114,.15); --gradient-end: rgba(255,77,79,.15);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body {
-      margin: 0;
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{
+      margin:0;
       background:
         radial-gradient(120% 140% at 15% 10%, var(--gradient-start), transparent 55%),
         radial-gradient(120% 140% at 85% 0%, var(--gradient-end), transparent 55%),
         linear-gradient(180deg, #07090c 0%, #0a0f14 60%, #07090c 100%);
-      color: var(--text);
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      line-height: 1.6; overflow-x: hidden;
+      color:var(--text); font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      line-height:1.6; overflow-x:hidden;
     }
-    a { color: inherit; text-decoration: none; transition: all 0.3s ease; }
-    img { max-width: 100%; display: block; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-    section { padding: 80px 0; }
+    a{color:inherit;text-decoration:none;transition:.3s}
+    img{max-width:100%;display:block}
+    .container{max-width:1200px;margin:0 auto;padding:0 24px}
+    section{padding:80px 0}
 
     /* Animations */
-    @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
-    .animate { opacity: 0; transform: translateY(20px); transition: opacity .8s, transform .8s; }
-    .animate.animated { opacity: 1; transform: translateY(0); }
+    .animate{opacity:0;transform:translateY(20px);transition:opacity .8s, transform .8s}
+    .animate.animated{opacity:1;transform:translateY(0)}
 
     /* Header */
-    header { position: sticky; top: 0; backdrop-filter: blur(10px);
-      background: linear-gradient(180deg, rgba(7,9,12,.85), rgba(7,9,12,.45));
-      border-bottom: 1px solid var(--edge-2); z-index: 100; padding: 12px 0; }
-    .nav { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
-    .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 900; letter-spacing: .3px; font-size: 1.4rem; }
-    .logo .mark { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center;
-      background: conic-gradient(from 270deg, var(--green) 0 50%, var(--red) 50% 100%);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-    .menu { display: flex; gap: 28px; color: #b7c6e0; }
-    .menu a { opacity: .9; font-weight: 500; position: relative; }
-    .menu a:after { content:''; position:absolute; width:0; height:2px; bottom:-4px; left:0; background:var(--green); transition: width .3s; }
-    .menu a:hover:after { width:100%; }
-
-    /* Ticker tape */
-    .tape { border-top: 1px solid var(--edge-2); border-bottom: 1px solid var(--edge-2);
-      background: linear-gradient(90deg, #081019, #0a1522, #081019); overflow: hidden; }
-    .marquee { display:flex; gap:28px; white-space:nowrap; animation: marquee 30s linear infinite; }
-    .marquee span { display:inline-flex; gap:8px; align-items:center; padding:12px 0; color:#a8b6ce; }
-    .dot { width:8px; height:8px; border-radius:999px; } .u{color:var(--green)} .d{color:var(--red)}
+    header{position:sticky;top:0;backdrop-filter:blur(10px);
+      background:linear-gradient(180deg,rgba(7,9,12,.85),rgba(7,9,12,.45));
+      border-bottom:1px solid var(--edge-2);z-index:100;padding:12px 0}
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:18px}
+    .logo{display:inline-flex;align-items:center;gap:10px;font-weight:900;letter-spacing:.3px;font-size:1.4rem}
+    .logo .mark{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;
+      background:conic-gradient(from 270deg,var(--green) 0 50%,var(--red) 50% 100%);
+      box-shadow:0 4px 12px rgba(0,0,0,.3)}
+    .menu{display:flex;gap:28px;color:#b7c6e0}
+    .menu a{opacity:.9;font-weight:500;position:relative}
+    .menu a:after{content:'';position:absolute;width:0;height:2px;bottom:-4px;left:0;background:var(--green);transition:width .3s}
+    .menu a:hover:after{width:100%}
 
     /* Hero */
-    .hero { display:grid; grid-template-columns:1.1fr .9fr; gap:60px; align-items:center; padding:80px 0; }
-    .h1 { font-size:3.5rem; line-height:1.1; margin:16px 0 20px; font-weight:800; letter-spacing:-.02em; }
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:60px;align-items:center;padding:60px 0}
+    .h1{font-size:3.2rem;line-height:1.1;margin:16px 0 20px;font-weight:800;letter-spacing:-.02em}
     .h1 .up{color:var(--green)} .h1 .down{color:var(--red)}
-    .sub { color:#b9c5d9; max-width:62ch; font-size:1.1rem; margin-bottom:24px; }
-    .badge { display:inline-flex; gap:8px; align-items:center; border:1px solid var(--edge-2); border-radius:999px;
-      padding:8px 16px; font-size:.85rem; color:#9db0cc; background:rgba(11, 17, 23, .7); backdrop-filter: blur(10px); }
-    .cta { display:flex; gap:16px; margin-top:32px; flex-wrap:wrap; }
-    .btn { background:var(--green); color:#06120b; font-weight:700; padding:16px 28px; border-radius:12px;
-      border:1px solid rgba(15,42,29,.5); cursor:pointer; box-shadow:0 10px 30px -8px var(--ring); transition: all .3s; display:inline-flex; gap:8px; align-items:center; }
-    .btn:hover { transform: translateY(-3px); box-shadow:0 14px 40px -8px var(--ring); }
-    .btn.ghost { background:transparent; color:#d8e4ff; border:1px solid var(--edge-2); }
-    .btn.ghost:hover { background: rgba(255,255,255,.05); }
+    .sub{color:#b9c5d9;max-width:62ch;font-size:1.1rem;margin-bottom:24px}
+    .badge{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--edge-2);border-radius:999px;
+      padding:8px 16px;font-size:.85rem;color:#9db0cc;background:rgba(11,17,23,.7);backdrop-filter:blur(10px)}
+    .cta{display:flex;gap:16px;margin-top:32px;flex-wrap:wrap}
+    .btn{background:var(--green);color:#06120b;font-weight:700;padding:16px 28px;border-radius:12px;
+      border:1px solid rgba(15,42,29,.5);cursor:pointer;box-shadow:0 10px 30px -8px var(--ring);
+      transition:all .3s;display:inline-flex;gap:8px;align-items:center}
+    .btn:hover{transform:translateY(-3px);box-shadow:0 14px 40px -8px var(--ring)}
+    .btn.ghost{background:transparent;color:#d8e4ff;border:1px solid var(--edge-2)}
+    .btn.ghost:hover{background:rgba(255,255,255,.05)}
 
-    .heroShot { border:1px solid var(--edge); border-radius:20px; background:linear-gradient(180deg,#0d1218,#0a0f15);
-      padding:20px; box-shadow:0 20px 40px rgba(0,0,0,.3); position:relative; overflow:hidden; }
-    .hero-image { border-radius:12px; overflow:hidden; }
-    .hero-image img { transition: transform .5s ease; } .hero-image:hover img{ transform: scale(1.02); }
-    .image-caption { color:#95a8c8; font-size:14px; text-align:center; margin-top:8px; }
+    .heroShot{border:1px solid var(--edge);border-radius:20px;background:linear-gradient(180deg,#0d1218,#0a0f15);
+      padding:20px;box-shadow:0 20px 40px rgba(0,0,0,.3);position:relative;overflow:hidden}
+    .hero-image{border-radius:12px;overflow:hidden}
+    .hero-image img{transition:transform .5s ease}
+    .hero-image:hover img{transform:scale(1.02)}
+    .image-caption{color:#95a8c8;font-size:14px;text-align:center;margin-top:8px}
 
-    /* Sections */
-    .section-title { text-align:center; margin-bottom:60px; }
-    .section-title h2 { font-size:2.5rem; font-weight:800; margin-bottom:16px; }
-    .section-title p { color:#9db0cc; max-width:700px; margin:0 auto; font-size:1.1rem; }
-    .grid-3 { display:grid; grid-template-columns: repeat(3,1fr); gap:24px; }
-    .grid-2 { display:grid; grid-template-columns: repeat(2,1fr); gap:24px; }
-    .card { background:linear-gradient(180deg,#0d1218 0%, #0a0f15 100%); border:1px solid var(--edge); border-radius:20px; padding:28px; transition:all .3s; position:relative; overflow:hidden; }
-    .card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,.2); border-color: rgba(22,193,114,.2); }
-    .pill { display:inline-block; padding:8px 16px; border-radius:999px; background:rgba(11,17,23,.7);
-      border:1px solid var(--edge-2); color:#9ab0d6; font-size:.85rem; font-weight:500; margin-bottom:16px; }
+    .section-title{text-align:center;margin-bottom:60px}
+    .section-title h2{font-size:2.3rem;font-weight:800;margin-bottom:16px}
+    .section-title p{color:#9db0cc;max-width:700px;margin:0 auto;font-size:1.05rem}
+    .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+    .card{background:linear-gradient(180deg,#0d1218 0%, #0a0f15 100%);border:1px solid var(--edge);
+      border-radius:20px;padding:28px;transition:all .3s;position:relative;overflow:hidden}
+    .card:hover{transform:translateY(-5px);box-shadow:0 15px 35px rgba(0,0,0,.2);border-color:rgba(22,193,114,.2)}
+    .pill{display:inline-block;padding:8px 16px;border-radius:999px;background:rgba(11,17,23,.7);
+      border:1px solid var(--edge-2);color:#9ab0d6;font-size:.85rem;font-weight:500;margin-bottom:16px}
 
-    /* Pricing */
-    .pricing { display:grid; grid-template-columns: repeat(3,1fr); gap:24px; }
-    .price { text-align:center; display:flex; flex-direction:column; height:100%; position:relative; }
-    .price .title { font-weight:700; font-size:1.3rem; margin-bottom:12px; }
-    .price .value { font-size:2.8rem; font-weight:800; margin:16px 0; color:var(--text); }
-    .price ul { list-style:none; padding:0; margin:20px 0; color:#c1cee8; flex-grow:1; }
-    .price li { display:flex; gap:10px; margin:12px 0; text-align:left; }
-    .check { width:20px; height:20px; border-radius:50%; background: linear-gradient(180deg, var(--green), #118e54);
-      display:inline-flex; align-items:center; justify-content:center; color:#04130a; font-weight:900; flex-shrink:0; }
-    .price.featured { outline:2px solid var(--green); outline-offset:-2px; transform: scale(1.03); z-index:1; }
-    .price.featured:before { content:'Most Popular'; position:absolute; top:0; right:24px; background:var(--green); color:#04130a;
-      font-weight:700; font-size:.8rem; padding:6px 12px; border-radius:0 0 8px 8px; }
-
-    /* Testimonials */
-    .testimonials { background: linear-gradient(180deg,#080c12,#0a1018); border-top:1px solid var(--edge); border-bottom:1px solid var(--edge); }
-    .testimonial-grid { display:grid; grid-template-columns: repeat(3,1fr); gap:24px; }
-    .testimonial { background: rgba(11,17,23,.5); border:1px solid var(--edge); border-radius:16px; padding:24px; position:relative; }
-    .testimonial:before { content:'\"'; position:absolute; top:15px; right:20px; font-size:4rem; color: rgba(22,193,114,.1); font-family: Georgia, serif; }
-    .testimonial-text { color:#c1cee8; margin-bottom:20px; font-style: italic; }
-    .author-avatar { width:40px; height:40px; border-radius:50%; background:var(--edge); display:flex; align-items:center; justify-content:center; color:var(--green); font-weight:700; }
-    .author-details { display:flex; flex-direction: column; } .author-name{font-weight:600} .author-title{font-size:.85rem;color:#8fa0b8}
-
-    /* FAQ & footer */
-    .faq details { background:#0b1117; border:1px solid var(--edge); border-radius:12px; padding:20px; margin-bottom:16px; transition: all .3s; }
-    .faq details[open]{ background: rgba(11,17,23,.7); border-color: rgba(22,193,114,.3); }
-    .faq summary { cursor:pointer; font-weight:600; display:flex; justify-content:space-between; align-items:center; }
-    .faq summary:after { content:'+'; font-size:1.5rem; color:var(--green); transition: transform .3s; }
-    .faq details[open] summary:after { content:'-'; }
-    .faq-content { margin-top:16px; color:#b3c3dd; }
-
-    .footer { border-top:1px solid var(--edge); color:#8aa0c7; padding:40px 0; margin-top:40px; }
+    /* Pricing (2 options only) */
+    .pricing{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+    .price{text-align:center;display:flex;flex-direction:column;height:100%;position:relative}
+    .price .title{font-weight:700;font-size:1.3rem;margin-bottom:12px}
+    .price .value{font-size:2.6rem;font-weight:800;margin:16px 0;color:var(--text)}
+    .price ul{list-style:none;padding:0;margin:16px 0;color:#c1cee8;flex-grow:1}
+    .price li{display:flex;gap:10px;margin:10px 0;text-align:left}
+    .check{width:20px;height:20px;border-radius:50%;background:linear-gradient(180deg,var(--green),#118e54);
+      display:inline-flex;align-items:center;justify-content:center;color:#04130a;font-weight:900;flex-shrink:0}
+    .price.featured{outline:2px solid var(--green);outline-offset:-2px;transform:scale(1.02);z-index:1}
+    .footer{border-top:1px solid var(--edge);color:#8aa0c7;padding:40px 0;margin-top:40px}
 
     /* Responsive */
-    @media (max-width:1024px){ .hero{grid-template-columns:1fr; text-align:center; gap:40px}
-      .grid-3, .testimonial-grid { grid-template-columns: repeat(2,1fr); }
-      .h1 { font-size:2.8rem; } }
-    @media (max-width:768px){ .grid-3, .grid-2, .pricing, .testimonial-grid { grid-template-columns:1fr; }
-      .menu{display:none} .h1{font-size:2.3rem} .section-title h2{font-size:2rem}
-      .trust-badges { justify-content:center; } }
-
-    /* Mobile menu */
-    .mobile-menu-btn { display:none; background:none; border:0; color:var(--text); font-size:1.5rem; cursor:pointer; }
-    @media (max-width:768px){ .mobile-menu-btn{display:block} }
+    @media (max-width:1024px){.hero{grid-template-columns:1fr;text-align:center;gap:40px}.grid-3{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:768px){.grid-3,.grid-2,.pricing{grid-template-columns:1fr}.menu{display:none}.h1{font-size:2.2rem}}
+    .mobile-menu-btn{display:none;background:none;border:0;color:var(--text);font-size:1.5rem;cursor:pointer}
+    @media (max-width:768px){.mobile-menu-btn{display:block}}
   </style>
 </head>
 <body>
@@ -140,23 +108,36 @@
       <div class="logo"><span class="mark">9</span><span>9toNone</span></div>
       <nav class="menu">
         <a href="#features">Features</a>
-        <a href="#testimonials">Testimonials</a>
-        <a href="#shots">Screenshots</a>
+        <a href="#quotes">Live Quotes</a>
         <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
       </nav>
       <button class="mobile-menu-btn"><i class="fas fa-bars"></i></button>
     </div>
-    <div class="tape">
-      <div class="marquee" aria-label="Market tape placeholder">
-        <span><span class="dot" style="background:var(--green)"></span>TSLA <b class="u">+1.8%</b></span>
-        <span><span class="dot" style="background:var(--red)"></span>NVDA <b class="d">-0.7%</b></span>
-        <span><span class="dot" style="background:var(--green)"></span>SPY <b class="u">+0.5%</b></span>
-        <span><span class="dot" style="background:var(--red)"></span>BTC <b class="d">-0.9%</b></span>
-        <span><span class="dot" style="background:var(--green)"></span>AMZN <b class="u">+0.3%</b></span>
-        <span><span class="dot" style="background:var(--green)"></span>MSFT <b class="u">+0.6%</b></span>
-        <span><span class="dot" style="background:var(--red)"></span>ETH <b class="d">-1.2%</b></span>
-        <span><span class="dot" style="background:var(--green)"></span>AAPL <b class="u">+0.4%</b></span>
+
+    <!-- Live Ticker Tape (TradingView) -->
+    <div class="container" style="padding-top:10px">
+      <div class="tradingview-widget-container">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+        {
+          "symbols": [
+            {"proName": "NASDAQ:TSLA", "title": "TSLA"},
+            {"proName": "NASDAQ:NVDA", "title": "NVDA"},
+            {"proName": "NASDAQ:AAPL", "title": "AAPL"},
+            {"proName": "NASDAQ:AMZN", "title": "AMZN"},
+            {"proName": "NASDAQ:MSFT", "title": "MSFT"},
+            {"proName": "SP:SPX", "title": "S&P 500"},
+            {"proName": "BITSTAMP:BTCUSD", "title": "BTC/USD"},
+            {"proName": "BITSTAMP:ETHUSD", "title": "ETH/USD"}
+          ],
+          "showSymbolLogo": true,
+          "colorTheme": "dark",
+          "isTransparent": true,
+          "displayMode": "adaptive",
+          "locale": "en"
+        }
+        </script>
       </div>
     </div>
   </header>
@@ -167,19 +148,14 @@
       <h1 class="h1">Professional Trading Signals with <span class="up">Precision</span> and <span class="down">Clarity</span></h1>
       <p class="sub">The <b>9toNone™ Indicator</b> overlays precise BUY, SELL, and EXIT markers directly on your TradingView charts. You get <b>exclusive access</b> tied to your username—no source code shared, just results.</p>
       <div class="cta">
-        <a class="btn" href="#checkout" id="buyNow"><i class="fas fa-arrow-right"></i> Get Access Now</a>
-        <a class="btn ghost" href="#how"><i class="fas fa-play-circle"></i> See How It Works</a>
+        <a class="btn" id="buyMonthly"><i class="fas fa-arrow-right"></i> Get Monthly Access</a>
+        <a class="btn ghost" href="#pricing"><i class="fas fa-tags"></i> See Plans</a>
       </div>
-      <div class="trust-badges" style="display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:40px">
-        <div class="trust-item"><span class="trust-icon"><i class="fas fa-shield-alt"></i></span><span>Secure & Private</span></div>
-        <div class="trust-item"><span class="trust-icon"><i class="fas fa-chart-line"></i></span><span>Proven Performance</span></div>
-        <div class="trust-item"><span class="trust-icon"><i class="fas fa-headset"></i></span><span>Priority Support</span></div>
-      </div>
+      <div style="display:flex;gap:24px;margin-top:18px;color:#9db0cc">Questions? <a href="mailto:9tononeassociates@gmail.com" style="color:var(--green)">9tononeassociates@gmail.com</a></div>
     </div>
     <div class="heroShot animate">
       <div class="pill"><i class="fas fa-chart-bar"></i> Live chart preview</div>
       <div class="hero-image">
-        <!-- Replace with your actual chart screenshot when ready -->
         <img src="https://placehold.co/800x450/0a0f15/eaf1f8?text=9toNone+TradingView+Indicator" alt="9toNone TradingView Indicator Preview">
       </div>
       <p class="image-caption">Real-time signals with green BUY and red SELL/EXIT markers</p>
@@ -206,80 +182,47 @@
         <div class="card animate">
           <div class="pill"><i class="fas fa-bell"></i> Alert-Ready</div>
           <h3 style="margin:8px 0 12px">Instant Notifications</h3>
-          <p style="color:#b1c2db">Use TradingView's native alerts to receive notifications when signals print.</p>
+          <p style="color:#b1c2db">Use TradingView alerts to get immediate notifications when signals print.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="testimonials" id="testimonials">
+  <!-- Live Symbol Overview -->
+  <section id="quotes">
     <div class="container">
       <div class="section-title animate">
-        <h2>What Our Traders Say</h2>
-        <p>Join traders who have transformed their trading with 9toNone</p>
+        <h2>Live Markets Overview</h2>
+        <p>Stay close to price action right from the 9toNone homepage</p>
       </div>
-      <div class="testimonial-grid">
-        <div class="testimonial animate">
-          <p class="testimonial-text">This indicator has completely changed my trading game. Clear signals and impressive accuracy.</p>
-          <div class="testimonial-author"><div class="author-avatar">MJ</div><div class="author-details"><span class="author-name">Michael Johnson</span><span class="author-title">Day Trader</span></div></div>
-        </div>
-        <div class="testimonial animate">
-          <p class="testimonial-text">I’ve tried countless indicators—9toNone stands out. The invite-only system keeps the edge.</p>
-          <div class="testimonial-author"><div class="author-avatar">SR</div><div class="author-details"><span class="author-name">Sarah Reynolds</span><span class="author-title">Swing Trader</span></div></div>
-        </div>
-        <div class="testimonial animate">
-          <p class="testimonial-text">As a newer trader, the clarity helped me get results faster. Worth it.</p>
-          <div class="testimonial-author"><div class="author-avatar">DP</div><div class="author-details"><span class="author-name">David Park</span><span class="author-title">Beginner Trader</span></div></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="shots">
-    <div class="container">
-      <div class="section-title animate">
-        <h2>See It In Action</h2>
-        <p>Chart examples showing 9toNone signals</p>
-      </div>
-      <div class="grid-2">
-        <div class="card animate">
-          <div class="pill"><i class="fas fa-arrow-up"></i> BUY Example</div>
-          <div class="chart-image"><img src="https://placehold.co/800x450/0a0f15/16c172?text=BUY+Signal+Example" alt="BUY Signal Example"></div>
-          <p class="image-caption">Green BUY tags with risk levels</p>
-        </div>
-        <div class="card animate">
-          <div class="pill"><i class="fas fa-arrow-down"></i> SELL/EXIT Example</div>
-          <div class="chart-image"><img src="https://placehold.co/800x450/0a0f15/ff4d4f?text=SELL+Signal+Example" alt="SELL Signal Example"></div>
-          <p class="image-caption">Red SELL and EXIT tags for risk management</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="how">
-    <div class="container">
-      <div class="section-title animate">
-        <h2>How It Works</h2>
-        <p>Get started in three simple steps</p>
-      </div>
-      <div class="grid-2">
-        <div class="card animate">
-          <div class="pill"><i class="fas fa-list-ol"></i> 3-Step Access</div>
-          <ol style="margin:16px 0 0 24px; color:#c1cee8">
-            <li style="margin-bottom:12px"><b>Purchase</b> below (secure checkout).</li>
-            <li style="margin-bottom:12px">Submit your <b>TradingView username</b> after checkout.</li>
-            <li style="margin-bottom:12px">We grant <b>exclusive access</b>. Find it under <em>Indicators → Invite-Only Scripts</em>.</li>
-          </ol>
-        </div>
-        <div class="card animate">
-          <div class="pill"><i class="fas fa-graduation-cap"></i> Best Practices</div>
-          <ul style="margin:16px 0 0 24px; color:#c1cee8">
-            <li style="margin-bottom:12px">Risk 1%–2% per trade.</li>
-            <li style="margin-bottom:12px">Backtest & forward-test on your symbols.</li>
-            <li style="margin-bottom:12px">Combine with HTF trend if desired.</li>
-            <li style="margin-bottom:12px">Use TradingView alerts for immediacy.</li>
-          </ul>
-        </div>
+      <div class="tradingview-widget-container card">
+        <div class="tradingview-widget-container__widget"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+        {
+          "symbols": [
+            ["NASDAQ:TSLA|1D"], ["NASDAQ:NVDA|1D"], ["NASDAQ:AAPL|1D"],
+            ["NASDAQ:AMZN|1D"], ["NASDAQ:MSFT|1D"], ["SP:SPX|1D"],
+            ["BITSTAMP:BTCUSD|1D"], ["BITSTAMP:ETHUSD|1D"]
+          ],
+          "chartOnly": false,
+          "width": "100%",
+          "height": "500",
+          "locale": "en",
+          "colorTheme": "dark",
+          "autosize": true,
+          "showVolume": false,
+          "showMA": false,
+          "hideDateRanges": false,
+          "hideMarketStatus": false,
+          "hideSymbolLogo": false,
+          "scalePosition": "right",
+          "scaleMode": "Normal",
+          "fontFamily": "Inter, sans-serif",
+          "noTimeScale": false,
+          "backgroundColor": "rgba(0, 0, 0, 0)",
+          "gridLineColor": "rgba(255, 255, 255, 0.06)"
+        }
+        </script>
       </div>
     </div>
   </section>
@@ -288,47 +231,43 @@
     <div class="container">
       <div class="section-title animate">
         <h2>Simple, Transparent Pricing</h2>
-        <p>Choose what fits your style</p>
+        <p>Choose Monthly or Lifetime access</p>
       </div>
+
       <div class="pricing">
-        <div class="card price animate">
-          <div class="title">Starter</div>
-          <div class="value">$39<span style="font-size:16px;font-weight:600"> / month</span></div>
+        <!-- Monthly -->
+        <div class="card price featured animate">
+          <div class="title">Monthly</div>
+          <div class="value">$50<span style="font-size:16px;font-weight:600"> / month</span></div>
           <ul>
             <li><span class="check">✓</span> Invite-only access</li>
-            <li><span class="check">✓</span> 1 device</li>
+            <li><span class="check">✓</span> All timeframes & markets</li>
             <li><span class="check">✓</span> Email support</li>
-            <li><span class="check">✓</span> Basic updates</li>
-            <li><span class="check">✓</span> All timeframes</li>
+            <li><span class="check">✓</span> Updates included</li>
           </ul>
-          <div style="margin-top:14px"><a class="btn ghost" href="#checkout">Start Monthly</a></div>
+          <div style="margin-top:14px">
+            <a class="btn" id="btnMonthly" data-gumroad-single-product="true">Start Monthly</a>
+          </div>
         </div>
-        <div class="card price featured animate">
-          <div class="title">Pro</div>
-          <div class="value">$99<span style="font-size:16px;font-weight:600"> / quarter</span></div>
-          <ul>
-            <li><span class="check">✓</span> Everything in Starter</li>
-            <li><span class="check">✓</span> 2 devices</li>
-            <li><span class="check">✓</span> Priority support</li>
-            <li><span class="check">✓</span> Advanced features</li>
-            <li><span class="check">✓</span> Custom alerts</li>
-          </ul>
-          <div style="margin-top:14px"><a class="btn" href="#checkout">Start Quarterly</a></div>
-        </div>
+
+        <!-- Lifetime -->
         <div class="card price animate">
           <div class="title">Lifetime</div>
           <div class="value">$299<span style="font-size:16px;font-weight:600"> once</span></div>
           <ul>
             <li><span class="check">✓</span> Permanent access</li>
-            <li><span class="check">✓</span> 3 devices</li>
-            <li><span class="check">✓</span> Lifetime updates</li>
-            <li><span class="check">✓</span> VIP support</li>
-            <li><span class="check">✓</span> Future indicators</li>
+            <li><span class="check">✓</span> All future updates</li>
+            <li><span class="check">✓</span> Priority support</li>
           </ul>
-          <div style="margin-top:14px"><a class="btn ghost" href="#checkout">Buy Lifetime</a></div>
+          <div style="margin-top:14px">
+            <a class="btn ghost" id="btnLifetime" data-gumroad-single-product="true">Buy Lifetime</a>
+          </div>
         </div>
       </div>
-      <p style="color:#95a8c8;font-size:14px;margin-top:20px;text-align:center">Educational use only. Not financial advice.</p>
+
+      <p style="color:#95a8c8;font-size:14px;margin-top:20px;text-align:center">
+        Educational use only. Not financial advice.
+      </p>
     </div>
   </section>
 
@@ -348,46 +287,13 @@
           <div class="faq-content">Any symbol on TradingView: stocks, crypto, indices, futures, FX. Timeframes from 1-minute to weekly.</div>
         </details>
         <details class="animate">
-          <summary>Do you send SMS alerts?</summary>
-          <div class="faq-content">Use TradingView’s native alerts for phone/email notifications. SMS may be added later.</div>
+          <summary>How do I get access after paying?</summary>
+          <div class="faq-content">You enter your TradingView username at checkout. We whitelist you and it appears under Indicators → Invite-Only Scripts.</div>
         </details>
         <details class="animate">
           <summary>Refund policy?</summary>
-          <div class="faq-content">Digital access is invite-only; sales are typically final. We’ll resolve access issues promptly.</div>
+          <div class="faq-content">Digital invite-only access is generally final. We’ll resolve any access issues promptly.</div>
         </details>
-        <details class="animate">
-          <summary>How quickly do I get access?</summary>
-          <div class="faq-content">Typically minutes during market hours, up to 12 hours off-hours.</div>
-        </details>
-        <details class="animate">
-          <summary>Multiple TradingView accounts?</summary>
-          <div class="faq-content">Access is tied to one username; more devices/accounts require a higher plan.</div>
-        </details>
-      </div>
-    </div>
-  </section>
-
-  <section id="checkout">
-    <div class="container">
-      <div class="card" style="padding:40px; background:linear-gradient(135deg, rgba(11,17,23,0.9), rgba(11,22,35,0.9)); border:1px solid var(--green);">
-        <div class="grid-2" style="align-items:center">
-          <div class="animate">
-            <div class="pill"><i class="fas fa-lock"></i> Secure Checkout</div>
-            <h3 style="margin:16px 0 12px">Ready to Transform Your Trading?</h3>
-            <p style="color:#9fb2cf; margin-bottom:24px">Select your plan and click below to complete your secure purchase. After payment, you’ll submit your TradingView username for access.</p>
-            <a class="btn" href="#" id="checkoutLink"><i class="fas fa-arrow-right"></i> Go to Secure Checkout</a>
-            <p style="color:#95a8c8;font-size:14px;margin-top:16px">Questions? Email <a href="mailto:9tononeassociates@gmail.com" style="color:var(--green);">9tononeassociates@gmail.com</a>.</p>
-          </div>
-          <div class="card animate" style="background:rgba(11, 17, 23, 0.7); padding:24px;">
-            <div class="pill"><i class="fas fa-truck"></i> What happens after payment</div>
-            <ol style="margin:16px 0 0 24px; color:#c1cee8">
-              <li style="margin-bottom:12px">Instant email receipt + username submission</li>
-              <li style="margin-bottom:12px">We add your username to our invite list</li>
-              <li style="margin-bottom:12px">TradingView → <em>Indicators</em> → <em>Invite-Only Scripts</em></li>
-              <li style="margin-bottom:12px">Start receiving signals</li>
-            </ol>
-          </div>
-        </div>
       </div>
     </div>
   </section>
@@ -418,13 +324,14 @@
   </footer>
 
   <script>
-    // ✅ Set your product URL here (Gumroad):
-    const PRODUCT_URL = "https://gumroad.com/l/9tonone-indicator";
+    // ==== EDIT THESE TWO LINKS ONLY ====
+    const MONTHLY_URL  = "YOUR_MONTHLY_LINK_HERE";   // e.g. https://mustangrider78.gumroad.com/l/9tonone-monthly
+    const LIFETIME_URL = "YOUR_LIFETIME_LINK_HERE";  // e.g. https://mustangrider78.gumroad.com/l/9tonone-lifetime
+    // ===================================
 
     // Animate on scroll
     function animateOnScroll() {
-      const elements = document.querySelectorAll('.animate');
-      elements.forEach(el => {
+      document.querySelectorAll('.animate').forEach(el => {
         const top = el.getBoundingClientRect().top;
         if (top < window.innerHeight - 150) el.classList.add('animated');
       });
@@ -432,16 +339,23 @@
     window.addEventListener('scroll', animateOnScroll);
     window.addEventListener('load', animateOnScroll);
 
-    // Checkout link handler
-    document.querySelectorAll('#checkoutLink, #buyNow').forEach(el => {
-      el.addEventListener('click', (e) => {
-        if (!PRODUCT_URL || PRODUCT_URL === '#') {
-          e.preventDefault();
-          alert('Set PRODUCT_URL to your real Gumroad link.');
-          return;
-        }
-        el.setAttribute('href', PRODUCT_URL);
-      });
+    // Wire buttons
+    const buyMonthly  = document.getElementById('buyMonthly');
+    const btnMonthly  = document.getElementById('btnMonthly');
+    const btnLifetime = document.getElementById('btnLifetime');
+
+    [buyMonthly, btnMonthly].forEach(el => el && el.addEventListener('click', (e) => {
+      if (!MONTHLY_URL || MONTHLY_URL.includes("YOUR_MONTHLY_LINK_HERE")) {
+        e.preventDefault(); alert('Set MONTHLY_URL in the HTML to your real Gumroad link.'); return;
+      }
+      el.setAttribute('href', MONTHLY_URL);
+    }));
+
+    btnLifetime && btnLifetime.addEventListener('click', (e) => {
+      if (!LIFETIME_URL || LIFETIME_URL.includes("YOUR_LIFETIME_LINK_HERE")) {
+        e.preventDefault(); alert('Set LIFETIME_URL in the HTML to your real Gumroad link.'); return;
+      }
+      btnLifetime.setAttribute('href', LIFETIME_URL);
     });
 
     // Current year
@@ -456,6 +370,8 @@
       });
     }
   </script>
+
+  <!-- Gumroad overlay (optional) -->
   <script src="https://gumroad.com/js/gumroad.js" async></script>
 </body>
 </html>
