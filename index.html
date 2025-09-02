@@ -1,1015 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>9toNone™ TradingView Indicator - Professional Buy/Sell Signals</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #3a86ff;
-            --secondary: #8338ec;
-            --accent: #ff006e;
-            --success: #16c172;
-            --danger: #ff4d4f;
-            --dark: #0b1016;
-            --darker: #07090c;
-            --text: #eaf1f8;
-            --text-muted: #8fa0b8;
-            --border: #162231;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
-        }
-        
-        body {
-            background: linear-gradient(135deg, var(--darker) 0%, #0a0f14 100%);
-            color: var(--text);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        /* Header Styles */
-        header {
-            background: rgba(7, 9, 12, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-weight: 800;
-            font-size: 24px;
-        }
-        
-        .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: conic-gradient(from 270deg, var(--success) 0 50%, var(--danger) 50% 100%);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-        }
-        
-        nav {
-            display: flex;
-            gap: 30px;
-        }
-        
-        nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-        }
-        
-        nav a:hover {
-            color: var(--text);
-        }
-        
-        .nav-cta {
-            background: var(--success);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 30px;
-            font-weight: 600;
-            transition: all 0.3s;
-        }
-        
-        .nav-cta:hover {
-            background: #14a862;
-            transform: translateY(-2px);
-        }
-        
-        /* Hero Section */
-        .hero {
-            padding: 80px 0;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: center;
-        }
-        
-        .hero-content {
-            padding-right: 20px;
-        }
-        
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(22, 193, 114, 0.15);
-            color: var(--success);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 20px;
-        }
-        
-        h1 {
-            font-size: 48px;
-            line-height: 1.2;
-            margin-bottom: 20px;
-            font-weight: 800;
-        }
-        
-        .hero-accent {
-            color: var(--success);
-        }
-        
-        .hero-subtitle {
-            font-size: 18px;
-            color: var(--text-muted);
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        
-        .hero-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin: 30px 0;
-        }
-        
-        .stat-item {
-            text-align: center;
-        }
-        
-        .stat-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--success);
-            margin-bottom: 5px;
-        }
-        
-        .stat-label {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-        
-        .cta-buttons {
-            display: flex;
-            gap: 15px;
-            margin-top: 30px;
-        }
-        
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 16px 32px;
-            border-radius: 10px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-        
-        .btn-primary {
-            background: var(--success);
-            color: white;
-            box-shadow: 0 10px 30px rgba(22, 193, 114, 0.3);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(22, 193, 114, 0.4);
-        }
-        
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text);
-            border: 1px solid var(--border);
-        }
-        
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-        
-        .hero-visual {
-            position: relative;
-        }
-        
-        .chart-container {
-            background: var(--dark);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-        }
-        
-        .chart-placeholder {
-            height: 300px;
-            background: linear-gradient(135deg, #0d1218 0%, #0a0f15 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-muted);
-        }
-        
-        /* Features Section */
-        .section {
-            padding: 80px 0;
-        }
-        
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-        
-        .section-title h2 {
-            font-size: 36px;
-            margin-bottom: 15px;
-        }
-        
-        .section-title p {
-            color: var(--text-muted);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .features-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-        
-        .feature-card {
-            background: linear-gradient(135deg, #0d1218 0%, #0a0f15 100%);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
-            transition: all 0.3s;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(22, 193, 114, 0.3);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
-        }
-        
-        .feature-icon {
-            width: 60px;
-            height: 60px;
-            background: rgba(22, 193, 114, 0.15);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: var(--success);
-            margin-bottom: 20px;
-        }
-        
-        .feature-card h3 {
-            font-size: 20px;
-            margin-bottom: 15px;
-        }
-        
-        .feature-card p {
-            color: var(--text-muted);
-        }
-        
-        /* Testimonials */
-        .testimonials {
-            background: linear-gradient(135deg, rgba(11, 16, 22, 0.8) 0%, rgba(7, 9, 12, 0.8) 100%);
-        }
-        
-        .testimonials-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-        }
-        
-        .testimonial-card {
-            background: linear-gradient(135deg, #0d1218 0%, #0a0f15 100%);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
-            position: relative;
-        }
-        
-        .testimonial-card:before {
-            content: '"';
-            font-size: 60px;
-            color: var(--success);
-            opacity: 0.2;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            line-height: 1;
-        }
-        
-        .testimonial-content {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .testimonial-text {
-            margin-bottom: 20px;
-            font-style: italic;
-        }
-        
-        .testimonial-author {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
-        .author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            color: var(--success);
-        }
-        
-        .author-details {
-            line-height: 1.4;
-        }
-        
-        .author-name {
-            font-weight: 600;
-        }
-        
-        .author-title {
-            font-size: 14px;
-            color: var(--text-muted);
-        }
-        
-        /* Pricing */
-        .pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        
-        .pricing-card {
-            background: linear-gradient(135deg, #0d1218 0%, #0a0f15 100%);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 40px 30px;
-            text-align: center;
-            position: relative;
-            transition: all 0.3s;
-        }
-        
-        .pricing-card.featured {
-            border-color: var(--success);
-            transform: scale(1.03);
-        }
-        
-        .popular-badge {
-            position: absolute;
-            top: -12px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--success);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-        }
-        
-        .pricing-card h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-        
-        .price {
-            font-size: 48px;
-            font-weight: 800;
-            margin: 20px 0;
-            color: var(--success);
-        }
-        
-        .price span {
-            font-size: 16px;
-            color: var(--text-muted);
-            font-weight: normal;
-        }
-        
-        .pricing-features {
-            list-style: none;
-            margin: 25px 0;
-            text-align: left;
-        }
-        
-        .pricing-features li {
-            margin-bottom: 12px;
-            padding-left: 30px;
-            position: relative;
-        }
-        
-        .pricing-features li:before {
-            content: "✓";
-            color: var(--success);
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-        }
-        
-        /* Guarantee */
-        .guarantee {
-            background: linear-gradient(135deg, rgba(22, 193, 114, 0.1) 0%, rgba(22, 193, 114, 0.05) 100%);
-            border: 1px solid rgba(22, 193, 114, 0.2);
-            border-radius: 12px;
-            padding: 40px;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .guarantee-icon {
-            font-size: 48px;
-            color: var(--success);
-            margin-bottom: 20px;
-        }
-        
-        .guarantee h3 {
-            font-size: 24px;
-            margin-bottom: 15px;
-        }
-        
-        .guarantee p {
-            color: var(--text-muted);
-        }
-        
-        /* FAQ */
-        .faq-container {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .faq-item {
-            border-bottom: 1px solid var(--border);
-            padding: 25px 0;
-        }
-        
-        .faq-question {
-            font-size: 18px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .faq-answer {
-            color: var(--text-muted);
-            margin-top: 15px;
-            display: none;
-        }
-        
-        .faq-answer.active {
-            display: block;
-        }
-        
-        /* Final CTA */
-        .final-cta {
-            background: linear-gradient(135deg, var(--success) 0%, #14a862 100%);
-            padding: 80px 0;
-            text-align: center;
-            color: white;
-        }
-        
-        .final-cta h2 {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        
-        .final-cta p {
-            max-width: 600px;
-            margin: 0 auto 30px;
-            font-size: 18px;
-            opacity: 0.9;
-        }
-        
-        /* Footer */
-        footer {
-            background: var(--darker);
-            padding: 60px 0 30px;
-        }
-        
-        .footer-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 40px;
-            margin-bottom: 40px;
-        }
-        
-        .footer-col h4 {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: var(--text);
-        }
-        
-        .footer-col ul {
-            list-style: none;
-        }
-        
-        .footer-col ul li {
-            margin-bottom: 12px;
-        }
-        
-        .footer-col a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        
-        .footer-col a:hover {
-            color: var(--text);
-        }
-        
-        .social-links {
-            display: flex;
-            gap: 15px;
-        }
-        
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text);
-            transition: all 0.3s;
-        }
-        
-        .social-links a:hover {
-            background: var(--success);
-            transform: translateY(-3px);
-        }
-        
-        .footer-bottom {
-            text-align: center;
-            padding-top: 30px;
-            border-top: 1px solid var(--border);
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-        
-        /* Responsive Design */
-        @media (max-width: 1024px) {
-            .features-grid,
-            .testimonials-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-            
-            .hero-content {
-                padding-right: 0;
-            }
-            
-            .hero-stats {
-                justify-content: center;
-            }
-            
-            .cta-buttons {
-                justify-content: center;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .features-grid,
-            .testimonials-grid,
-            .pricing-grid,
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 36px;
-            }
-            
-            .section {
-                padding: 60px 0;
-            }
-            
-            nav {
-                display: none;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>9toNone™ — Escape the 9-to-5 with Smarter Trading Signals</title>
+  <meta name="description" content="Clear BUY/SELL/STOP signals, real-time alerts, and simple execution. Weekly pass, monthly, or yearly plans." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b0d10;           /* near-black */
+      --fg:#e7ebef;           /* light text */
+      --muted:#a9b3be;        /* secondary text */
+      --brand:#00c853;        /* green = growth */
+      --brand-2:#ff1744;      /* red = sell */
+      --accent:#ffd54f;       /* warm accent for CTAs/badges */
+      --card:#13161a;         /* panels */
+      --border:#1f242b;
+      --shadow:0 10px 30px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.5}
+    a{color:inherit;text-decoration:none}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header{padding:20px 0 10px}
+    .logo{display:flex;align-items:center;gap:12px}
+    .logo-badge{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--brand),#0aff95);display:grid;place-items:center;font-weight:800;color:#04160b;box-shadow:var(--shadow)}
+    .hero{display:grid;gap:18px;padding:28px;border-radius:16px;background:linear-gradient(180deg,rgba(18,22,26,.9),rgba(18,22,26,.6));
+      border:1px solid var(--border)}
+    .hero h1{font-size:clamp(26px,4.3vw,48px);line-height:1.1;margin:0}
+    .hero p{margin:0;color:var(--muted);font-size:1.05rem}
+    .btn-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:6px}
+    .btn{padding:12px 18px;border-radius:10px;border:1px solid transparent;display:inline-flex;gap:10px;align-items:center;font-weight:700}
+    .btn-primary{background:var(--brand);color:#03160a}
+    .btn-outline{border-color:var(--brand);color:var(--fg)}
+    .trust{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+    .trust span{background:#0e1216;border:1px solid var(--border);padding:8px 10px;border-radius:8px;color:#b8c2cc;font-size:.92rem}
+
+    .panel{background:var(--card);border:1px solid var(--border);border-radius:16px;box-shadow:var(--shadow)}
+    .grid-2{display:grid;grid-template-columns:1fr;gap:18px}
+    @media (min-width:900px){.grid-2{grid-template-columns:1.2fr .8fr}}
+
+    .how h3,.plans h3,.proof h3,.faq h3{margin:0 0 8px}
+    .how ul{margin:8px 0 0 18px;color:var(--muted)}
+    .badge{background:var(--accent);color:#281800;font-weight:800;border-radius:8px;padding:4px 8px;display:inline-block}
+    .plans{padding:22px}
+    .cards{display:grid;grid-template-columns:1fr;gap:14px;margin-top:10px}
+    @media (min-width:840px){.cards{grid-template-columns:repeat(3,1fr)}}
+    .card{background:#0e1216;border:1px solid var(--border);border-radius:14px;padding:18px;display:grid;gap:12px}
+    .price{font-size:32px;font-weight:800}
+    .per{color:var(--muted);font-weight:600;font-size:.95rem}
+    .card ul{margin:0 0 0 18px;color:var(--muted);font-size:.95rem}
+    .card .cta{margin-top:2px}
+    .sell{color:var(--brand-2);font-weight:800}
+    .buy{color:var(--brand);font-weight:800}
+    .proof{padding:20px}
+    .proof-box{background:#0e1216;border:1px dashed #2a323c;border-radius:12px;padding:14px}
+    footer{margin-top:40px;padding:22px;border-top:1px solid var(--border);color:#9aa6b2;font-size:.95rem}
+    footer a:hover{text-decoration:underline}
+    .sticky-cta{position:sticky;bottom:0;background:rgba(6,8,10,.88);backdrop-filter: blur(6px);border-top:1px solid var(--border);padding:10px;display:flex;gap:8px;justify-content:center}
+    .sticky-cta a{flex:1;max-width:420px;text-align:center}
+  </style>
+  <!-- Optional: TikTok Pixel goes here -->
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="container header-container">
-            <div class="logo">
-                <div class="logo-icon">9</div>
-                <span>9toNone</span>
-            </div>
-            <nav>
-                <a href="#features">Features</a>
-                <a href="#testimonials">Results</a>
-                <a href="#pricing">Pricing</a>
-                <a href="#faq">FAQ</a>
-                <a href="#cta" class="nav-cta">Get Access</a>
-            </nav>
-        </div>
+  <div class="wrap">
+    <header class="logo">
+      <div class="logo-badge">9N</div>
+      <div>
+        <strong>9toNone™</strong><br><span style="color:#9fb2c5">Escape the 9-to-5 with smarter trading</span>
+      </div>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="badge">
-                    <i class="fas fa-lock"></i> Invite-Only Indicator
-                </div>
-                <h1>Stop Guessing, Start <span class="hero-accent">Profiting</span> with Clear Trading Signals</h1>
-                <p class="hero-subtitle">The 9toNone TradingView indicator delivers precise BUY, SELL, and EXIT signals directly to your charts. Join hundreds of traders who've transformed their strategy with our exclusive indicator.</p>
-                
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <div class="stat-value">72%</div>
-                        <div class="stat-label">Win Rate</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">500+</div>
-                        <div class="stat-label">Active Traders</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-value">24h</div>
-                        <div class="stat-label">Access Time</div>
-                    </div>
-                </div>
-                
-                <div class="cta-buttons">
-                    <a href="#pricing" class="btn btn-primary">
-                        <i class="fas fa-arrow-right"></i> Get Started Now
-                    </a>
-                    <a href="#features" class="btn btn-secondary">
-                        <i class="fas fa-chart-line"></i> Learn More
-                    </a>
-                </div>
-            </div>
-            <div class="hero-visual">
-                <div class="chart-container">
-                    <div class="chart-placeholder">
-                        <i class="fas fa-chart-line" style="font-size: 48px; margin-right: 15px;"></i>
-                        <span>TradingView Chart Integration</span>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <section class="hero panel">
+      <span class="badge">Step out of the grind</span>
+      <h1>Trade smarter. <span class="buy">BUY</span> the uptrends. <span class="sell">SELL</span> the reversals. Live freer.</h1>
+      <p>Clear <strong>BUY / SELL / STOP</strong> signals. Real-time alerts to your phone. Simple execution for busy people.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="#plans">See Plans</a>
+        <a class="btn btn-outline" href="#proof">How it works</a>
+      </div>
+      <div class="trust">
+        <span>✅ 10+ years backtested</span>
+        <span>✅ Real-time alerts</span>
+        <span>✅ No guesswork</span>
+      </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="section" id="features">
-        <div class="container">
-            <div class="section-title">
-                <h2>Why Traders Choose 9toNone</h2>
-                <p>Designed for clarity, precision, and consistent results</p>
-            </div>
-            
-            <div class="features-grid">
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <h3>Clear Visual Signals</h3>
-                    <p>Green BUY and red SELL/EXIT arrows appear directly on your charts with no interpretation needed.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-lock"></i>
-                    </div>
-                    <h3>Exclusive Access</h3>
-                    <p>Limited distribution ensures your edge remains your edge. We whitelist your TradingView username.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-bell"></i>
-                    </div>
-                    <h3>Alert Integration</h3>
-                    <p>Get instant notifications via TradingView alerts when new signals appear on your charts.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>All Timeframes</h3>
-                    <p>Works on any timeframe from 1-minute to weekly charts, adaptable to your trading style.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-sliders-h"></i>
-                    </div>
-                    <h3>Customizable Settings</h3>
-                    <p>Adjust sensitivity, add filters, and tailor the indicator to your specific trading preferences.</p>
-                </div>
-                
-                <div class="feature-card">
-                    <div class="feature-icon">
-                        <i class="fas fa-sync"></i>
-                    </div>
-                    <h3>Continuous Updates</h3>
-                    <p>Regular improvements and market adaptation ensure the indicator remains effective over time.</p>
-                </div>
-            </div>
+    <section class="grid-2" id="proof" style="margin-top:18px">
+      <div class="panel proof">
+        <h3>How 9toNone works</h3>
+        <p class="muted">Our private TradingView indicator prints:</p>
+        <div class="proof-box">
+          <ul>
+            <li><strong>BUY</strong> when momentum is on your side</li>
+            <li><strong>SELL</strong> before trends reverse</li>
+            <li><strong>STOP</strong> to protect capital</li>
+          </ul>
         </div>
+        <p style="color:#a9b3be;margin-top:10px">No complicated overlays. No hype. Just clear signals you can act on.</p>
+      </div>
+      <div class="panel proof">
+        <h3>What you get</h3>
+        <ul>
+          <li>Access to the 9toNone TradingView indicator</li>
+          <li>Alerts to SMS / Telegram (members)</li>
+          <li>Fast-start playbook: entries, exits, risk</li>
+        </ul>
+        <p style="color:#a9b3be">*For compliance: This is educational; not financial advice. Trading involves risk.</p>
+      </div>
     </section>
 
-    <!-- Testimonials Section -->
-    <section class="section testimonials" id="testimonials">
-        <div class="container">
-            <div class="section-title">
-                <h2>Trusted by Traders Worldwide</h2>
-                <p>See what our community is saying about the 9toNone indicator</p>
-            </div>
-            
-            <div class="testimonials-grid">
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p class="testimonial-text">"This indicator has completely changed my trading game. The signals are clear and timely. I've seen a 35% improvement in my win rate since I started using it."</p>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">M</div>
-                            <div class="author-details">
-                                <div class="author-name">Mark T.</div>
-                                <div class="author-title">Day Trader</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p class="testimonial-text">"As someone new to trading, the simplicity of the green/red signals has been invaluable. I no longer second-guess my entries and exits."</p>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">S</div>
-                            <div class="author-details">
-                                <div class="author-name">Sarah L.</div>
-                                <div class="author-title">Swing Trader</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="testimonial-card">
-                    <div class="testimonial-content">
-                        <p class="testimonial-text">"The invite-only system means the signals aren't diluted by thousands of users. This has maintained the edge that professional traders need."</p>
-                        <div class="testimonial-author">
-                            <div class="author-avatar">J</div>
-                            <div class="author-details">
-                                <div class="author-name">James R.</div>
-                                <div class="author-title">Professional Trader</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <section id="plans" class="panel plans" style="margin-top:18px">
+      <h3>Choose your plan & take action</h3>
+      <div class="cards">
+        <!-- WEEKLY PASS -->
+        <div class="card">
+          <div>
+            <div class="price">$7 <span class="per">/ 7-day pass</span></div>
+            <ul>
+              <li>Full access for 7 days</li>
+              <li>Great for testing signals</li>
+              <li>No auto-renew (buy again anytime)</li>
+            </ul>
+          </div>
+          <a class="btn btn-primary cta" href="https://YOUR-GUMROAD-WEEKLY-PASS-LINK" target="_blank" rel="noopener">Get Weekly Pass</a>
         </div>
+
+        <!-- MONTHLY -->
+        <div class="card" style="outline:2px solid var(--brand);outline-offset:2px">
+          <div>
+            <div class="price">$50 <span class="per">/ month</span></div>
+            <ul>
+              <li>Real-time alerts + indicator</li>
+              <li>Member community access</li>
+              <li>Cancel anytime</li>
+            </ul>
+          </div>
+          <a class="btn btn-primary cta" href="https://YOUR-GUMROAD-MEMBERSHIP-LINK?monthly=true&wanted=true" target="_blank" rel="noopener">Start Monthly</a>
+        </div>
+
+        <!-- YEARLY -->
+        <div class="card">
+          <div>
+            <div class="price">$299 <span class="per">/ year</span></div>
+            <ul>
+              <li>Best value (≈50% off)</li>
+              <li>All monthly benefits</li>
+              <li>Priority support</li>
+            </ul>
+          </div>
+          <a class="btn btn-primary cta" href="https://YOUR-GUMROAD-MEMBERSHIP-LINK?yearly=true&wanted=true" target="_blank" rel="noopener">Go Yearly</a>
+        </div>
+      </div>
+      <p style="margin-top:10px;color:#a9b3be">Tip: New? Try the $7 pass, then roll into Monthly or Yearly.</p>
     </section>
 
-    <!-- Pricing Section -->
-    <section class="section" id="pricing">
-        <div class="container">
-            <div class="section-title">
-                <h2>Simple, Transparent Pricing</h2>
-                <p>Choose the plan that works best for your trading needs</p>
-            </div>
-            
-            <div class="pricing-grid">
-                <div class="pricing-card featured">
-                    <div class="popular-badge">MOST POPULAR</div>
-                    <h3>Monthly Access</h3>
-                    <div class="price">$50<span>/month</span></div>
-                    <ul class="pricing-features">
-                        <li>Full indicator access</li>
-                        <li>All timeframes & markets</li>
-                        <li>Priority email support</li>
-                        <li>Regular updates included</li>
-                        <li>7-day money-back guarantee</li>
-                    </ul>
-                    <a href="https://mustangrider78.gumroad.com/l/9tonone-indicator" class="btn btn-primary">Get Monthly Access</a>
-                </div>
-                
-                <div class="pricing-card">
-                    <h3>Yearly Access</h3>
-                    <div class="price">$299<span>/year</span></div>
-                    <p style="color: var(--success); font-weight: 600; margin: -10px 0 20px;">Save 50% compared to monthly</p>
-                    <ul class="pricing-features">
-                        <li>12 months full access</li>
-                        <li>All updates during membership</li>
-                        <li>Priority support</li>
-                        <li>Exclusive advanced features</li>
-                        <li>7-day money-back guarantee</li>
-                    </ul>
-                    <a href="https://mustangrider78.gumroad.com/l/9tonone-yearly" class="btn btn-secondary">Get Yearly Access</a>
-                </div>
-            </div>
-            
-            <div class="guarantee">
-                <div class="guarantee-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3>7-Day Money Back Guarantee</h3>
-                <p>If you're not completely satisfied with the 9toNone indicator within the first 7 days, we'll refund your purchase. No questions asked.</p>
-            </div>
-        </div>
+    <section class="panel faq" style="margin-top:18px;padding:20px">
+      <h3>FAQ</h3>
+      <p><strong>Is this financial advice?</strong><br> No. Educational signals only. Trade at your own risk.</p>
+      <p><strong>Refunds?</strong><br> Because access is instant, sales are final.</p>
     </section>
 
-    <!-- FAQ Section -->
-    <section class="section" id="faq">
-        <div class="container">
-            <div class="section-title">
-                <h2>Frequently Asked Questions</h2>
-                <p>Everything you need to know about the 9toNone indicator</p>
-            </div>
-            
-            <div class="faq-container">
-                <div class="faq-item">
-                    <div class="faq-question">
-                        How quickly will I get access after purchasing?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Typically within 24 hours, though it's often much faster. Once you purchase, you'll receive an email with instructions to submit your TradingView username for whitelisting.
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        What if the indicator doesn't work for my trading style?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        We offer a 7-day money-back guarantee. If you're not satisfied with the results, simply email us within 7 days of purchase for a full refund.
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Does it work on all markets and timeframes?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Yes, the 9toNone indicator works on stocks, forex, crypto, and futures across all timeframes from 1-minute to monthly charts.
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        Can I use this on multiple TradingView accounts?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Each purchase allows whitelisting for one TradingView username. If you need multiple accounts, please contact us for volume pricing.
-                    </div>
-                </div>
-                
-                <div class="faq-item">
-                    <div class="faq-question">
-                        How often is the indicator updated?
-                        <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        We continuously monitor market conditions and update the algorithm as needed. All updates are automatically available to current subscribers.
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="sticky-cta">
+      <a class="btn btn-primary" href="https://YOUR-GUMROAD-MEMBERSHIP-LINK?monthly=true&wanted=true" target="_blank" rel="noopener">Start Monthly — $50</a>
+      <a class="btn btn-outline" href="https://YOUR-GUMROAD-WEEKLY-PASS-LINK" target="_blank" rel="noopener">$7 Weekly Pass</a>
+    </div>
 
-    <!-- Final CTA Section -->
-    <section class="final-cta" id="cta">
-        <div class="container">
-            <h2>Ready to Transform Your Trading?</h2>
-            <p>Join hundreds of traders who use 9toNone for clearer signals and better results</p>
-            <a href="https://mustangrider78.gumroad.com/l/9tonone-indicator" class="btn btn-secondary">Get 9toNone Now</a>
-            <p style="margin-top: 15px; font-size: 14px; opacity: 0.8;">7-day money-back guarantee • Secure checkout</p>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
-                <div class="footer-col">
-                    <h4>9toNone</h4>
-                    <p>The premier TradingView indicator for clear BUY/SELL signals and consistent trading results.</p>
-                    <div class="social-links">
-                        <a href="#"><i class="fab fa-telegram"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fas fa-envelope"></i></a>
-                    </div>
-                </div>
-                
-                <div class="footer-col">
-                    <h4>Product</h4>
-                    <ul>
-                        <li><a href="#features">Features</a></li>
-                        <li><a href="#pricing">Pricing</a></li>
-                        <li><a href="#testimonials">Testimonials</a></li>
-                        <li><a href="#faq">FAQ</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h4>Resources</h4>
-                    <ul>
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Tutorials</a></li>
-                        <li><a href="#">Support</a></li>
-                        <li><a href="#">Contact Us</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-col">
-                    <h4>Legal</h4>
-                    <ul>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Refund Policy</a></li>
-                        <li><a href="#">Disclaimer</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2023 9toNone. All rights reserved. Trading involves risk. This is not financial advice.</p>
-            </div>
-        </div>
+    <footer class="wrap">
+      <div>© 2025 9toNone™ — All rights reserved.</div>
+      <div>Follow on TikTok: <a href="https://www.tiktok.com/@9tononelife" target="_blank" rel="noopener">@9tononelife</a></div>
+      <div style="margin-top:6px;color:#a9b3be">Contact: 9tononeassociates@gmail.com</div>
     </footer>
-
-    <script>
-        // FAQ toggle functionality
-        document.querySelectorAll('.faq-question').forEach(question => {
-            question.addEventListener('click', () => {
-                const answer = question.nextElementSibling;
-                answer.classList.toggle('active');
-                const icon = question.querySelector('i');
-                icon.classList.toggle('fa-chevron-down');
-                icon.classList.toggle('fa-chevron-up');
-            });
-        });
-        
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                }
-            });
-        });
-    </script>
+  </div>
 </body>
 </html>
